@@ -1,0 +1,16 @@
+.box {
+    border: 2px solid black;
+    min-height: 100px;
+    margin-bottom: 10px;
+    padding: 5px
+}
+
+.title {
+    font-size: 1.6rem;
+    font-weight: 700
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    font-weight: 500
+}

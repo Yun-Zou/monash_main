@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+
+    <script type="text/javascript"
+        src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <script type="text/javascript" type="text/javascript">
+        // Connecting to ROS
+        // -----------------
+
+        var ros = new ROSLIB.Ros({
+            url: 'ws://localhost:9090'
+        });
+
+        ros.on('connection', function () {
+            console.log('Connected to websocket server.');
+        });
+
+        ros.on('error', function (error) {
+            console.log('Error connecting to websocket server: ', error);
+        });
+
+        ros.on('close', function () {
+            console.log('Connection to websocket server closed.');
+        });
+
+        // Publishing a Topic
+        // ------------------
+
+        var cmdVel = new ROSLIB.Topic({
+            ros: ros,
+            name: '/cmd_vel',
+            messageType: 'geometry_msgs/Twist'
+        });
+
+        var twist = new ROSLIB.Message({
+            linear: {
+                x: 0.1,
+                y: 0.2,
+                z: 0.3
+            },
+            angular: {
+                x: -0.1,
+                y: -0.2,
+                z: -0.3
+            }
+        });
+        cmdVel.publish(twist);
+
+        // Subscribing to a Topic
+        // ----------------------
+
+        var image_topic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/camera/fisheye1/image_raw/compressed',
+            messageType: 'sensor_msgs/CompressedImage'
+        });
+
+        image_topic.subscribe(function (message) {
+            document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
+
+        });
+
+        var image_undistorted_topic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/camera/fisheye1/rect/image/compressed',
+            messageType: 'sensor_msgs/CompressedImage'
+        });
+
+        image_undistorted_topic.subscribe(function (message) {
+            document.getElementById('my_image_undistorted').src = "data:image/jpg;base64," + message.data;
+            cmdVel.publish(twist);
+        });
+
+        // Calling a service
+        // -----------------
+
+        var addTwoIntsClient = new ROSLIB.Service({
+            ros: ros,
+            name: '/add_two_ints',
+            serviceType: 'rospy_tutorials/AddTwoInts'
+        });
+
+        var request = new ROSLIB.ServiceRequest({
+            a: 1,
+            b: 2
+        });
+
+        addTwoIntsClient.callService(request, function (result) {
+            console.log('Result for service call on '
+                + addTwoIntsClient.name
+                + ': '
+                + result.sum);
+        });
+
+        // Getting and setting a param value
+        // ---------------------------------
+
+        ros.getParams(function (params) {
+            console.log(params);
+        });
+
+        var maxVelX = new ROSLIB.Param({
+            ros: ros,
+            name: 'max_vel_y'
+        });
+
+        maxVelX.set(0.8);
+        maxVelX.get(function (value) {
+            console.log('MAX VAL: ' + value);
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Drone Monitoring</h1>
+    <p>Check your Web Console for output.</p>
+    <div class="row"> 
+        <div class="col-6"><img id="my_image" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png"></div>
+        <div class="col-6"><img id="my_image_undistorted" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png"></div>
+    </div>
+    
+</body>
+
+</html>
