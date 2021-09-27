@@ -1,5 +1,20 @@
 $(document).ready(function () {
     
+    let droneros;
+    let local;
+
+    let image_topic;
+
+    let connections = {
+        drone: false,
+        local: false
+    }
+
+    let feeds = {
+        camera_feed: false,
+        maps_feed: false
+    }
+
     let drone_msgs = {
         initialised: false,
         initial_time: 0,
@@ -8,51 +23,67 @@ $(document).ready(function () {
 
     var rounding_factor = 10000;
 
-    var ros = new ROSLIB.Ros({
-        url: 'ws://localhost:9090'
-    });
-
-    ros.on('connection', function () {
-        console.log('Connected to websocket server.');
-    });
-
-    ros.on('error', function (error) {
-        console.log('Error connecting to websocket server: ', error);
-    });
-
-    ros.on('close', function () {
-        console.log('Connection to websocket server closed.');
-    });
+    rosConnect();
 
     $("#submit-IP").click(function() {
         let IP = 'ws://' + $("#drone-IP").val() + ':9090';
         $("#submit-IP").attr("disabled",true);
         
-        let droneros = new ROSLIB.Ros({
+        droneros = new ROSLIB.Ros({
             url: IP
         });
 
         droneros.on('connection', function () {
             console.log('Connected to Drone websocket server.');
             $("#drone-IP").removeClass("form-border-error").addClass("form-border-success");
+            
             subscribeDronePositionTopics(droneros)
             subscribeDroneCameraTopics(droneros)
+            
+            enableButtons()
+            
+            connections.drone = true;
         });
 
         droneros.on('error', function (error) {
             console.log('Error connecting to Drone websocket server: ', error);
             $("#drone-IP").removeClass("form-border-success").addClass("form-border-error");
+            
+            disableButtons()
+            
+            connections.drone = false;
         });
 
         droneros.on('close', function () {
             console.log('Connection to Drone websocket server closed.');
             $("#drone-IP").removeClass("form-border-success").addClass("form-border-error");
+            
+            disableButtons()
+            connections.drone = false;
         });
 
         setInterval(function () {
             $("#submit-IP").attr("disabled", false);
          }, 1000);
         
+    })
+
+    $("#show-camera").click(function() {
+        if (connections.drone) {
+            if (feeds.camera_feed) {
+                $("#show-camera").addClass("btn-danger").removeClass("btn-warning").html("Close Camera Image")
+                unsubscribeDroneCameraTopics(droneros);
+                feeds.camera_feed = true
+            } else {
+                $("#show-camera").addClass("btn-warning").removeClass("btn-danger").html("Show Camera Image")
+                subscribeDroneCameraTopics()
+                feeds.camera_feed = false
+            }
+        }
+    })
+
+    $("#show-maps").click(function () {
+        console.log("show maps")
     })
 
 
@@ -89,16 +120,70 @@ $(document).ready(function () {
     }
 
     function subscribeDroneCameraTopics(droneros) {
-        var image_topic = new ROSLIB.Topic({
+        image_topic = new ROSLIB.Topic({
             ros: droneros,
             name: '/camera/fisheye1/image_raw/compressed',
             messageType: 'sensor_msgs/CompressedImage'
         });
 
         image_topic.subscribe(function (message) {
-            document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
+            document.getElementById('drone-camera').src = "data:image/jpg;base64," + message.data;
+        });
+    }
+
+    function unsubscribeDroneCameraTopics() {
+        image_topic.unsubscribe();
+        document.getElementById('drone-camera').src = ""
+    }
+
+    function subscribeDroneRectTopics(ros) {
+        console.log("ASDF")
+        var rect_topic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/camera/fisheye1/image_raw/rectified',
+            messageType: 'sensor_msgs/CompressedImage'
         });
 
+        rect_topic.subscribe(function (message) {
+            console.log("blah")
+            document.getElementById('drone-undistorted').src = "data:image/jpg;base64," + message.data;
+        });
+
+    }
+
+    function dronerosConnect(){
+        
+    }
+
+    function rosConnect() {
+        ros = new ROSLIB.Ros({
+            url: 'ws://localhost:9090'
+        });
+
+        ros.on('connection', function () {
+            console.log('Connected to websocket server.');
+            connections.local = true;
+        });
+
+        ros.on('error', function (error) {
+            console.log('Error connecting to websocket server: ', error);
+            connections.local = false;
+        });
+
+        ros.on('close', function () {
+            console.log('Connection to websocket server closed.');
+            connections.local = false;
+        });
+    }
+
+    function enableButtons() {
+        $("#show-camera").attr('disabled', false)
+        $("#show-maps").attr('disabled', false)
+    }
+
+    function disableButtons() {
+        $("#show-camera").attr('disabled', true)
+        $("#show-maps").attr('disabled', true)
     }
 
 });

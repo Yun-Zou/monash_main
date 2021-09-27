@@ -219,25 +219,65 @@
         </div>
         <div class="col-12 col-md-6">
             <div class="title">Drone Controls</div>
-            <div class="controls-div"><button type="button" class="btn btn-warning">Take-Off Request /\</button></div>
-            <div class="controls-div"><button type="button" class="btn btn-primary">Relative Move</button></div>
-            <div class="controls-div"><button type="button" class="btn btn-primary">Search Command</button></div>
-            <div class="controls-div"><button type="button" class="btn btn-primary">Follow</button></div>
-            <div class="controls-div"><button type="button" class="btn btn-dark">Clear Commands</button></div>
+            <div class="controls-div">
+                <button type="button" class="btn btn-warning" disabled id="#command-takeoff">Take-Off Request /\</button>
+            </div>
+            <div class="controls-div">
+                <button type="button" class="btn btn-primary" disabled id="#command-move">Relative Move</button>
+            </div>
+            <div class="controls-div">
+                <button type="button" class="btn btn-primary" disabled id="#command-search">Search Command</button>
+            </div>
+            <div class="controls-div">
+                <button type="button" class="btn btn-primary" disabled id="#command-follow">Follow</button>
+            </div>
+            <div class="controls-div">
+                <button type="button" class="btn btn-dark" disabled id="#command-clear">Clear Commands</button>
+            </div>
             
         </div>
     </div>
+    <div class="row">
+        <div class="title">Camera Views</div>
+            <div class="controls-div">
+                <button class="btn btn-warning" type="button" data-bs-toggle="collapse" disabled data-bs-target="#collapse-camera" id="show-camera"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Show Camera Image
+                </button>
+                <button class="btn btn-warning" type="button" data-bs-toggle="collapse" disabled data-bs-target="#collapse-maps" id="show-maps"
+                    aria-expanded="false" aria-controls="collapseExample">
+                    Show Undistorted and Depth Map
+                </button>
+            </div>
+    </div>
+    <br>
     <div class="row"> 
         <div class="col-4">
             <div class="title text-center">T265 Camera</div>
-            <img id="my_image" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png"></div>
+            <div class="collapse" id="collapse-camera">
+                <div class="card card-body">
+                    <img id="drone-camera" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png">
+                </div>
+                
+            </div>    
+        </div>
         <div class="col-4">
             <div class="title text-center">Undistorted View</div>
-            <img id="my_image_undistorted" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png"></div>
+            <div class="collapse" id="collapse-maps">
+                <div class="card card-body">
+                    <img id="drone-undistorted" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png">
+                </div>
+            </div>
+        </div>
         <div class="col-4">
-            <div class="title text-center">Depth Map</div>
-            <img id="my_image_undistorted" style='height: 100%; width: 100%; object-fit: contain'
-                src="assets/img/placeholder.png"></div>
+            <div class="title text-center">Depth View</div>
+            <div class="collapse" id="collapse-maps">
+                <div class="card card-body">
+                    <img id="drone-depth" style='height: 100%; width: 100%; object-fit: contain'
+                        src="assets/img/placeholder.png">
+                </div>
+            </div>
+        </div>
     </div>
     
 </body>
