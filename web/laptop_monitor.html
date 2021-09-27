@@ -11,27 +11,12 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+
+    <script type="text/javascript" src="js/monitor.js"></script>
+
     <script type="text/javascript" type="text/javascript">
         // Connecting to ROS
         // -----------------
-
-        var rounding_factor = 10000;
-
-        var ros = new ROSLIB.Ros({
-            url: 'ws://localhost:9090'
-        });
-
-        ros.on('connection', function () {
-            console.log('Connected to websocket server.');
-        });
-
-        ros.on('error', function (error) {
-            console.log('Error connecting to websocket server: ', error);
-        });
-
-        ros.on('close', function () {
-            console.log('Connection to websocket server closed.');
-        });
 
         // Publishing a Topic
         // ------------------
@@ -65,20 +50,20 @@
             messageType: 'sensor_msgs/CompressedImage'
         });
 
-        var mavros_vision_pose = new ROSLIB.Topic({
+        var image_undistorted_topic = new ROSLIB.Topic({
             ros: ros,
+            name: '/camera/fisheye1/rect/image/compressed',
+            messageType: 'sensor_msgs/CompressedImage'
+        });
+
+        var mavros_vision_pose = new ROSLIB.Topic({
+            ros: drone-ros,
             name: '/mavros/vision_pose/pose',
             messageType: 'geometry_msgs/PoseStamped'
         });        
 
         image_topic.subscribe(function (message) {
             document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
-        });
-
-        var image_undistorted_topic = new ROSLIB.Topic({
-            ros: ros,
-            name: '/camera/fisheye1/rect/image/compressed',
-            messageType: 'sensor_msgs/CompressedImage'
         });
 
         image_undistorted_topic.subscribe(function (message) {
@@ -142,8 +127,21 @@
 <body style="padding:10px">
     <h1>Drone Monitoring</h1>
     <p>GUI monitoring of Drone and UGV.</p>
+    
     <div class="row">
-        <div class="col-6">
+        <div class="col-10 col-md-4 my-1">
+            <div class="input-group" id="form-IP">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">IP Address</div>
+                </div>
+                <input type="text" class="form-control form-border-error" id="drone-IP">
+            </div>
+        </div>
+        <div class="col-2 my-1"><button type="button" class="btn btn-primary" id="submit-IP">Submit</button></div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-6">
             <div class="title">Status</div>
             <div class="box">
                 <div class="subtitle">Drone Monitor</div>
@@ -159,15 +157,15 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 col-md-3 my-1">
+                        <div class="col-4 col-md-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">x (m)</div>
+                                    <div class="input-group-text">x</div>
                                 </div>
                                 <input type="text" class="form-control" readonly id="drone-position-x">
                             </div>
                         </div>
-                        <div class="col-4 col-md-3 my-1">
+                        <div class="col-4 col-md-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">y</div>
@@ -175,7 +173,7 @@
                                 <input type="text" class="form-control" readonly id="drone-position-y">
                             </div>
                         </div>
-                        <div class="col-4 col-md-3 my-1">
+                        <div class="col-4 col-md-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">z</div>
@@ -185,7 +183,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 col-md-3 my-1">
+                        <div class="col-4 col-md-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Yaw</div>
@@ -193,7 +191,7 @@
                                 <input type="text" class="form-control" readonly id="drone-orientation-yaw">
                             </div>
                         </div>
-                        <div class="col-4 col-md-3 my-1">
+                        <div class="col-4 col-md-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Pitch</div>
@@ -201,7 +199,7 @@
                                 <input type="text" class="form-control" readonly id="drone-orientation-pitch">
                             </div>
                         </div>
-                        <div class="col-4 col-md-3 my-1">
+                        <div class="col-4 col-md-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Roll</div>
@@ -212,24 +210,21 @@
                     </div>
                 </form>
                 <div class="row mt-2">
-                    <div class="overflow-auto">
-                        <div>00:00:00 - Console Started</div>
-                    </div>
+                    <div>Status</div>
                 </div>
             </div>
             <div class="box">
                 <div class="subtitle">UGV Monitor</div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             <div class="title">Drone Controls</div>
-                <button type="button" class="btn btn-warning">Take-Off Request /\</button>
-                <button type="button" class="btn btn-warning">Land Request \/</button>
-            <button type="button" class="btn btn-danger">Stop /\</button>
+            <div class="controls-div"><button type="button" class="btn btn-warning">Take-Off Request /\</button></div>
+            <div class="controls-div"><button type="button" class="btn btn-primary">Relative Move</button></div>
+            <div class="controls-div"><button type="button" class="btn btn-primary">Search Command</button></div>
+            <div class="controls-div"><button type="button" class="btn btn-primary">Follow</button></div>
+            <div class="controls-div"><button type="button" class="btn btn-dark">Clear Commands</button></div>
             
-            <div class="row">
-                <button type="button" class="btn btn-danger">Stop</button>
-            </div>
         </div>
     </div>
     <div class="row"> 
