@@ -6,7 +6,7 @@
     <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
 
     <!-- This node will launch MAVROS -->
-    <include file="$(find monash_perception)/launch/apm.launch"/>
+    <include file="$(find monash_main)/launch/apm.launch"/>
 
     <!-- This node will launch the node that bridges realsense-ros and MAVROS -->
     <include file="$(find vision_to_mavros)/launch/t265_tf_to_mavros.launch"/>
