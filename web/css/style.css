@@ -14,3 +14,16 @@
     font-size: 1.3rem;
     font-weight: 500
 }
+
+.controls-div {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.form-border-error {
+    border: 2px solid red
+}
+
+.form-border-success {
+    border: 2px solid green
+}
