@@ -44,32 +44,32 @@
         // Subscribing to a Topic
         // ----------------------
 
-        var image_topic = new ROSLIB.Topic({
-            ros: ros,
-            name: '/camera/fisheye1/image_raw/compressed',
-            messageType: 'sensor_msgs/CompressedImage'
-        });
+        // var image_topic = new ROSLIB.Topic({
+        //     ros: ros,
+        //     name: '/camera/fisheye1/image_raw/compressed',
+        //     messageType: 'sensor_msgs/CompressedImage'
+        // });
 
-        var image_undistorted_topic = new ROSLIB.Topic({
-            ros: ros,
-            name: '/camera/fisheye1/rect/image/compressed',
-            messageType: 'sensor_msgs/CompressedImage'
-        });
+        // var image_undistorted_topic = new ROSLIB.Topic({
+        //     ros: ros,
+        //     name: '/camera/fisheye1/rect/image/compressed',
+        //     messageType: 'sensor_msgs/CompressedImage'
+        // });
 
-        var mavros_vision_pose = new ROSLIB.Topic({
-            ros: drone-ros,
-            name: '/mavros/vision_pose/pose',
-            messageType: 'geometry_msgs/PoseStamped'
-        });        
+        // var mavros_vision_pose = new ROSLIB.Topic({
+        //     ros: drone-ros,
+        //     name: '/mavros/vision_pose/pose',
+        //     messageType: 'geometry_msgs/PoseStamped'
+        // });        
 
-        image_topic.subscribe(function (message) {
-            document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
-        });
+        // image_topic.subscribe(function (message) {
+        //     document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
+        // });
 
-        image_undistorted_topic.subscribe(function (message) {
-            document.getElementById('my_image_undistorted').src = "data:image/jpg;base64," + message.data;
-            cmdVel.publish(twist);
-        });
+        // image_undistorted_topic.subscribe(function (message) {
+        //     document.getElementById('my_image_undistorted').src = "data:image/jpg;base64," + message.data;
+        //     cmdVel.publish(twist);
+        // });
 
         mavros_vision_pose.subscribe(function (message) {
             let q = message.pose.orientation;
@@ -150,7 +150,7 @@
                         <div class="col-12 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">Heartbeat</div>
+                                    <div class="input-group-text">Time</div>
                                 </div>
                                 <input type="text" class="form-control" readonly id="drone-heartbeat">
                             </div>
@@ -273,8 +273,7 @@
             <div class="title text-center">Depth View</div>
             <div class="collapse" id="collapse-maps">
                 <div class="card card-body">
-                    <img id="drone-depth" style='height: 100%; width: 100%; object-fit: contain'
-                        src="assets/img/placeholder.png">
+                    <img id="drone-depth" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png">
                 </div>
             </div>
         </div>
