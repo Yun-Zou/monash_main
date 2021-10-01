@@ -3,8 +3,6 @@ $(document).ready(function () {
     let droneros;
     let local;
 
-    let image_topic;
-
     let connections = {
         drone: false,
         local: false
@@ -18,8 +16,8 @@ $(document).ready(function () {
     let drone_msgs = {
         initialised: false,
         initial_time: 0,
+        current_time: 0
     }
-    let drone_heartbeat = 0;
 
     var rounding_factor = 10000;
 
@@ -38,10 +36,8 @@ $(document).ready(function () {
             $("#drone-IP").removeClass("form-border-error").addClass("form-border-success");
             
             subscribeDronePositionTopics(droneros)
-            subscribeDroneCameraTopics(droneros)
             
             enableButtons()
-            
             connections.drone = true;
         });
 
@@ -70,20 +66,30 @@ $(document).ready(function () {
 
     $("#show-camera").click(function() {
         if (connections.drone) {
-            if (feeds.camera_feed) {
+            if (!feeds.camera_feed) {
                 $("#show-camera").addClass("btn-danger").removeClass("btn-warning").html("Close Camera Image")
-                unsubscribeDroneCameraTopics(droneros);
+                subscribeDroneCameraTopics(droneros)
                 feeds.camera_feed = true
             } else {
                 $("#show-camera").addClass("btn-warning").removeClass("btn-danger").html("Show Camera Image")
-                subscribeDroneCameraTopics()
+                unsubscribeDroneCameraTopics();
                 feeds.camera_feed = false
             }
         }
     })
 
     $("#show-maps").click(function () {
-        console.log("show maps")
+        if (connections.drone) {
+            if (!feeds.maps_feed) {
+                $("#show-maps").addClass("btn-danger").removeClass("btn-warning").html("Close Undistorted and Depth Map")
+                subscribeDroneMapsTopics(droneros)
+                feeds.maps_feed = true
+            } else {
+                $("#show-maps").addClass("btn-warning").removeClass("btn-danger").html("Show Undistorted and Depth Map")
+                unsubscribeDroneMapsTopics();
+                feeds.maps_feed = false
+            }
+        }
     })
 
 
@@ -106,9 +112,9 @@ $(document).ready(function () {
             $("#drone-orientation-pitch").val(Math.round(pitch * 180 / Math.PI * rounding_factor) / rounding_factor);
             $("#drone-orientation-roll").val(Math.round(roll * 180 / Math.PI * rounding_factor) / rounding_factor);
             
-            if (drone_heartbeat.initialised == false) {
-                drone_heartbeat.initial_time = message.header.stamp.secs
-                drone_heartbeat.initialised = true
+            if (drone_msgs.initialised == false) {
+                drone_msgs.initial_time = message.header.stamp.secs
+                drone_msgs.initialised = true
             }
 
             let time = message.header.stamp.secs - drone_msgs.initial_time;
@@ -120,7 +126,7 @@ $(document).ready(function () {
     }
 
     function subscribeDroneCameraTopics(droneros) {
-        image_topic = new ROSLIB.Topic({
+        var image_topic = new ROSLIB.Topic({
             ros: droneros,
             name: '/camera/fisheye1/image_raw/compressed',
             messageType: 'sensor_msgs/CompressedImage'
@@ -136,19 +142,34 @@ $(document).ready(function () {
         document.getElementById('drone-camera').src = ""
     }
 
-    function subscribeDroneRectTopics(ros) {
-        console.log("ASDF")
+    function subscribeDroneMapsTopics(droneros) {
         var rect_topic = new ROSLIB.Topic({
-            ros: ros,
-            name: '/camera/fisheye1/image_raw/rectified',
+            ros: droneros,
+            name: '/camera/fisheye1/image_raw/rectified/compressed',
+            messageType: 'sensor_msgs/CompressedImage'
+        });
+
+        var depth_topic = new ROSLIB.Topic({
+            ros: droneros,
+            name: '/disparity/compressed',
             messageType: 'sensor_msgs/CompressedImage'
         });
 
         rect_topic.subscribe(function (message) {
-            console.log("blah")
             document.getElementById('drone-undistorted').src = "data:image/jpg;base64," + message.data;
         });
 
+        depth_topic.subscribe(function (message) {
+            document.getElementById('drone-depth').src = "data:image/jpg;base64," + message.data;
+        });
+
+    }
+
+    function unsubscribeDroneMapsTopics() {
+        rect_topic.unsubscribe();
+        depth_topic.unsubscribe();
+        document.getElementById('drone-undistorted').src = ""
+        document.getElementById('drone-depth').src = ""
     }
 
     function dronerosConnect(){
@@ -175,15 +196,27 @@ $(document).ready(function () {
             connections.local = false;
         });
     }
-
+    
     function enableButtons() {
         $("#show-camera").attr('disabled', false)
         $("#show-maps").attr('disabled', false)
+
+        $("#command-takeoff").attr('disabled', false)
+        $("#command-move").attr('disabled', false)
+        $("#command-search").attr('disabled', false)
+        $("#command-follow").attr('disabled', false)
+        $("#command-clear").attr('disabled', false)
     }
 
     function disableButtons() {
         $("#show-camera").attr('disabled', true)
         $("#show-maps").attr('disabled', true)
+
+        $("#command-takeoff").attr('disabled', true)
+        $("#command-move").attr('disabled', true)
+        $("#command-search").attr('disabled', true)
+        $("#command-follow").attr('disabled', true)
+        $("#command-clear").attr('disabled', false)
     }
 
 });
