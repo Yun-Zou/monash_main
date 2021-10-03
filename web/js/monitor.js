@@ -10,6 +10,7 @@ $(document).ready(function () {
 
     let feeds = {
         camera_feed: false,
+        apriltags_feed: false,
         maps_feed: false
     }
 
@@ -21,7 +22,7 @@ $(document).ready(function () {
 
     var rounding_factor = 10000;
 
-    rosConnect();
+    // rosConnect();
 
     $("#submit-IP").click(function() {
         let IP = 'ws://' + $("#drone-IP").val() + ':9090';
@@ -38,6 +39,7 @@ $(document).ready(function () {
             subscribeDronePositionTopics(droneros)
             
             enableButtons()
+            enableCommands()
             connections.drone = true;
         });
 
@@ -46,7 +48,7 @@ $(document).ready(function () {
             $("#drone-IP").removeClass("form-border-success").addClass("form-border-error");
             
             disableButtons()
-            
+            disableCommands()
             connections.drone = false;
         });
 
@@ -55,6 +57,7 @@ $(document).ready(function () {
             $("#drone-IP").removeClass("form-border-success").addClass("form-border-error");
             
             disableButtons()
+            disableCommands()
             connections.drone = false;
         });
 
@@ -65,6 +68,28 @@ $(document).ready(function () {
     })
 
     $("#show-camera").click(function() {
+        if (connections.drone) {
+            if (!feeds.camera_feed) {
+                $("#show-camera").addClass("btn-danger").removeClass("btn-warning").html("Close Camera Image")
+                subscribeDroneCameraTopics(droneros)
+
+                $("#show-apriltags").attr('disabled', false)
+                $("#show-apriltags").addClass("btn-warning").removeClass("btn-secondary").html("Close AprilTags")
+
+                feeds.camera_feed = true
+            } else {
+                $("#show-camera").addClass("btn-warning").removeClass("btn-danger").html("Show Camera Image")
+                unsubscribeDroneCameraTopics();
+
+                $("#show-apriltags").attr('disabled', true)
+                $("#show-apriltags").addClass("btn-secondary").removeClass("btn-warning").html("Show AprilTags")
+
+                feeds.camera_feed = false
+            }
+        }
+    })
+
+    $("#show-apriltags").click(function () {
         if (connections.drone) {
             if (!feeds.camera_feed) {
                 $("#show-camera").addClass("btn-danger").removeClass("btn-warning").html("Close Camera Image")
@@ -90,6 +115,39 @@ $(document).ready(function () {
                 feeds.maps_feed = false
             }
         }
+    })
+
+    $("#command-search").click(function () {
+
+        console.log('asdf')
+        var addTwoIntsClient = new ROSLIB.Service({
+            ros: droneros,
+            name: '/add_two_ints',
+            serviceType: 'rospy_tutorials/AddTwoInts'
+        });
+
+        var request = new ROSLIB.ServiceRequest({
+            a: 1,
+            b: 2
+        });
+
+        addTwoIntsClient.callService(request, function (result) {
+            console.log('Result for service call on '
+                + addTwoIntsClient.name
+                + ': '
+                + result.sum);
+        });
+        // if (connections.drone) {
+        //     if (!feeds.maps_feed) {
+        //         $("#show-maps").addClass("btn-danger").removeClass("btn-warning").html("Close Undistorted and Depth Map")
+        //         subscribeDroneMapsTopics(droneros)
+        //         feeds.maps_feed = true
+        //     } else {
+        //         $("#show-maps").addClass("btn-warning").removeClass("btn-danger").html("Show Undistorted and Depth Map")
+        //         unsubscribeDroneMapsTopics();
+        //         feeds.maps_feed = false
+        //     }
+        // }
     })
 
 
@@ -200,7 +258,15 @@ $(document).ready(function () {
     function enableButtons() {
         $("#show-camera").attr('disabled', false)
         $("#show-maps").attr('disabled', false)
+    }
 
+    function disableButtons() {
+        $("#show-camera").attr('disabled', true)
+        $("#show-apriltags").attr('disabled',true)
+        $("#show-maps").attr('disabled', true)
+    }
+
+    function enableCommands() {
         $("#command-takeoff").attr('disabled', false)
         $("#command-move").attr('disabled', false)
         $("#command-search").attr('disabled', false)
@@ -208,15 +274,12 @@ $(document).ready(function () {
         $("#command-clear").attr('disabled', false)
     }
 
-    function disableButtons() {
-        $("#show-camera").attr('disabled', true)
-        $("#show-maps").attr('disabled', true)
-
+    function disableCommands() {
         $("#command-takeoff").attr('disabled', true)
         $("#command-move").attr('disabled', true)
         $("#command-search").attr('disabled', true)
         $("#command-follow").attr('disabled', true)
-        $("#command-clear").attr('disabled', false)
+        $("#command-clear").attr('disabled', true)
     }
 
 });
