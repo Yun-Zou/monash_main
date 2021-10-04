@@ -12,5 +12,5 @@
     <include file="$(find vision_to_mavros)/launch/t265_tf_to_mavros.launch"/>
 
     <!-- This node will launch the node the rosbridge_server websocket -->
-    <include file="$(find rosbridger_server)/launch/rosbridge_websocket.launch"/>
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
 </launch>
