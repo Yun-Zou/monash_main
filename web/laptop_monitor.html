@@ -84,26 +84,6 @@
             $("#drone-orientation-roll").val(Math.round(roll * 180 / Math.PI * rounding_factor) / rounding_factor);
         });        
 
-        // Calling a service
-        // -----------------
-
-        var addTwoIntsClient = new ROSLIB.Service({
-            ros: ros,
-            name: '/add_two_ints',
-            serviceType: 'rospy_tutorials/AddTwoInts'
-        });
-
-        var request = new ROSLIB.ServiceRequest({
-            a: 1,
-            b: 2
-        });
-
-        addTwoIntsClient.callService(request, function (result) {
-            console.log('Result for service call on '
-                + addTwoIntsClient.name
-                + ': '
-                + result.sum);
-        });
 
         // Getting and setting a param value
         // ---------------------------------
@@ -209,33 +189,91 @@
                         </div>
                     </div>
                 </form>
-                <div class="row mt-2">
-                    <div>Status</div>
-                </div>
             </div>
             <div class="box">
                 <div class="subtitle">UGV Monitor</div>
             </div>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-6 col-md-3">
+            <div class="title">Flying Status</div>
+            <div class="box">
+                <form>
+                    <div class="row">
+                        <div class="col-12 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Flight Mode</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-flight-mode">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-9 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Waypoint #1</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-waypoint1">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-9 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Waypoint #2</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-waypoint2">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-9 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Waypoint #3</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-waypoint3">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-9 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Waypoint #4</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-waypoint4">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-9 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Waypoint #5</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-waypoint5">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
             <div class="title">Drone Controls</div>
-            <div class="controls-div">
-                <button type="button" class="btn btn-warning" disabled id="#command-takeoff">Take-Off Request /\</button>
+            <div class="box">
+                <div class="controls-div">
+                    <button type="button" class="btn btn-warning" disabled id="command-takeoff">Take-Off Request /\</button>
+                </div>
+                <div class="controls-div">
+                    <button type="button" class="btn btn-primary" disabled id="command-move">Relative Move</button>
+                </div>
+                <div class="controls-div">
+                    <button type="button" class="btn btn-primary" disabled id="command-search">Search Command</button>
+                </div>
+                <div class="controls-div">
+                    <button type="button" class="btn btn-primary" disabled id="command-follow">Follow</button>
+                </div>
+                <div class="controls-div">
+                    <button type="button" class="btn btn-dark" disabled id="command-clear">Clear Commands</button>
+                </div>
             </div>
-            <div class="controls-div">
-                <button type="button" class="btn btn-primary" disabled id="#command-move">Relative Move</button>
-            </div>
-            <div class="controls-div">
-                <button type="button" class="btn btn-primary" disabled id="#command-search">Search Command</button>
-            </div>
-            <div class="controls-div">
-                <button type="button" class="btn btn-primary" disabled id="#command-follow">Follow</button>
-            </div>
-            <div class="controls-div">
-                <button type="button" class="btn btn-dark" disabled id="#command-clear">Clear Commands</button>
-            </div>
+
             
         </div>
+        
     </div>
     <div class="row">
         <div class="title">Camera Views</div>
@@ -243,6 +281,9 @@
                 <button class="btn btn-warning" type="button" data-bs-toggle="collapse" disabled data-bs-target="#collapse-camera" id="show-camera"
                     aria-expanded="false" aria-controls="collapseExample">
                     Show Camera Image
+                </button>
+                <button class="btn btn-secondary" type="button" disabled id="show-apriltags">
+                    Show AprilTags
                 </button>
                 <button class="btn btn-warning" type="button" data-bs-toggle="collapse" disabled data-bs-target="#collapse-maps" id="show-maps"
                     aria-expanded="false" aria-controls="collapseExample">

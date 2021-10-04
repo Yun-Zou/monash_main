@@ -52,31 +52,6 @@
         });
         cmdVel.publish(twist);
 
-        // Subscribing to a Topic
-        // ----------------------
-
-        var image_topic = new ROSLIB.Topic({
-            ros: ros,
-            name: '/camera/fisheye1/image_raw/compressed',
-            messageType: 'sensor_msgs/CompressedImage'
-        });
-
-        image_topic.subscribe(function (message) {
-            document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
-
-        });
-
-        var image_undistorted_topic = new ROSLIB.Topic({
-            ros: ros,
-            name: '/camera/fisheye1/rect/image/compressed',
-            messageType: 'sensor_msgs/CompressedImage'
-        });
-
-        image_undistorted_topic.subscribe(function (message) {
-            document.getElementById('my_image_undistorted').src = "data:image/jpg;base64," + message.data;
-            cmdVel.publish(twist);
-        });
-
         // Calling a service
         // -----------------
 
