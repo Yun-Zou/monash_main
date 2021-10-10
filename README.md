@@ -30,7 +30,13 @@ Create symlinks in `your_node/` that point to the `.clang-tidy` and `.clang-form
 
 The easiest way to do this is to simply run the script: ```scripts/clang_links.sh```
 
-Don't forget to add `compile_commands.json` to your `.gitignore`
+Don't forget to create a global gitignore file to ignore these new files in all your submodules
+Create a '.gitignore_global' file to the base level
+Don't forget to add `compile_commands.json`,`clangd`,`.clang-format`,`.clang-tide` to your file
+
+```
+git config --global core.excludesfile ~/.gitignore_global
+```
 
 **clang-tidy** will run better if you add the following commands the settings of the vscode extension:
 
