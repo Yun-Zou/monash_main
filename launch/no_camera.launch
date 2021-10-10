@@ -1,0 +1,9 @@
+<launch>
+    <!-- This node will launch MAVROS -->
+    <include file="$(find monash_main)/launch/apm.launch"/>
+
+    <node pkg="rosservice" type="rosservice" name="rosservice" args="call /mavros/set_stream_rate 0 10 1"/>
+
+    <!-- This node will launch the node the rosbridge_server websocket -->
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+</launch>
