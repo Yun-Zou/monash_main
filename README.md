@@ -32,7 +32,7 @@ The easiest way to do this is to simply run the script: ```scripts/clang_links.s
 
 Don't forget to create a global gitignore file to ignore these new files in all your submodules
 Create a '.gitignore_global' file to the base level
-Don't forget to add `compile_commands.json`,`clangd`,`.clang-format`,`.clang-tide` to your file
+Don't forget to add `compile_commands.json`,`clangd`,`.clang-format`,`.clang-tidy` to your file
 
 ```
 git config --global core.excludesfile ~/.gitignore_global
