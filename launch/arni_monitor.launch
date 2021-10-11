@@ -1,0 +1,7 @@
+<launch>
+    <!-- Set enable_statics to true -->
+    <include file="$(find arni_core)/launch/init_params.launch"/>
+
+    <!-- Start node monitor -->
+    <node pkg="arni_nodeinterface" type="arni_nodeinterface" name="arni_nodeinterface" respawn="false" output="screen"/>
+</launch>

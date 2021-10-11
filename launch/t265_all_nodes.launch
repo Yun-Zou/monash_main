@@ -1,6 +1,5 @@
 <launch>
-    <!-- Launch 3 nodes as below
-    At development stage, each node should be launched in a separated terminal to view the output -->
+    <!-- At development stage, each node should be launched in a separated terminal to view the output -->
 
     <!-- This node will launch the ROS driver for Realsense T265 -->
     <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>

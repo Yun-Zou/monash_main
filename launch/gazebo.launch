@@ -6,4 +6,4 @@
     <arg name="gui" value="$(arg gui)"/>
     <!-- more default parameters can be changed here -->
   </include>
-</launch>+
+</launch>
