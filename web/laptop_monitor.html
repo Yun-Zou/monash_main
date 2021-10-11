@@ -127,7 +127,7 @@
                 <div class="subtitle">Drone Monitor</div>
                 <form>
                     <div class="row">
-                        <div class="col-12 my-1">
+                        <div class="col-6 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Time</div>
@@ -135,9 +135,17 @@
                                 <input type="text" class="form-control" readonly id="drone-heartbeat">
                             </div>
                         </div>
+                        <div class="col-6 col-md-6 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Flight Mode</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-flight-mode">
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 col-md-4 my-1">
+                        <div class="col-4 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">x</div>
@@ -145,7 +153,7 @@
                                 <input type="text" class="form-control" readonly id="drone-position-x">
                             </div>
                         </div>
-                        <div class="col-4 col-md-4 my-1">
+                        <div class="col-4 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">y</div>
@@ -153,7 +161,7 @@
                                 <input type="text" class="form-control" readonly id="drone-position-y">
                             </div>
                         </div>
-                        <div class="col-4 col-md-4 my-1">
+                        <div class="col-4 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">z</div>
@@ -163,7 +171,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 col-md-4 my-1">
+                        <div class="col-4 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Yaw</div>
@@ -171,7 +179,7 @@
                                 <input type="text" class="form-control" readonly id="drone-orientation-yaw">
                             </div>
                         </div>
-                        <div class="col-4 col-md-4 my-1">
+                        <div class="col-4 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Pitch</div>
@@ -179,7 +187,7 @@
                                 <input type="text" class="form-control" readonly id="drone-orientation-pitch">
                             </div>
                         </div>
-                        <div class="col-4 col-md-4 my-1">
+                        <div class="col-4 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Roll</div>
@@ -191,130 +199,203 @@
                 </form>
             </div>
             <div class="box">
-                <div class="subtitle">UGV Monitor</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="title">Flying Status</div>
-            <div class="box">
-                <form>
+                <div class="subtitle">Target Monitor</div>
                     <div class="row">
-                        <div class="col-12 my-1">
+                        <div class="col-6 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">Flight Mode</div>
+                                    <div class="input-group-text">Tag ID</div>
                                 </div>
-                                <input type="text" class="form-control" readonly id="drone-flight-mode">
+                                <input type="text" class="form-control" readonly id="drone-heartbeat">
                             </div>
                         </div>
-                        <div class="col-12 col-md-9 my-1">
+                        <div class="col-6 col-md-3 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">Waypoint #1</div>
+                                    <div class="input-group-text">Last</div>
                                 </div>
-                                <input type="text" class="form-control" readonly id="drone-waypoint1">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-9 my-1">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Waypoint #2</div>
-                                </div>
-                                <input type="text" class="form-control" readonly id="drone-waypoint2">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-9 my-1">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Waypoint #3</div>
-                                </div>
-                                <input type="text" class="form-control" readonly id="drone-waypoint3">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-9 my-1">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Waypoint #4</div>
-                                </div>
-                                <input type="text" class="form-control" readonly id="drone-waypoint4">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-9 my-1">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Waypoint #5</div>
-                                </div>
-                                <input type="text" class="form-control" readonly id="drone-waypoint5">
+                                <input type="text" class="form-control" readonly id="drone-heartbeat">
                             </div>
                         </div>
                     </div>
-                </form>
+                    <div class="row">
+                        <div class="col-4 col-md-3 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">x</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-position-x">
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-3 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">y</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-position-y">
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-3 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">z</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-position-z">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 col-md-3 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Yaw</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-orientation-yaw">
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-3 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Pitch</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-orientation-pitch">
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-3 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Roll</div>
+                                </div>
+                                <input type="text" class="form-control" readonly id="drone-orientation-roll">
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
-        <div class="col-6 col-md-3">
+        <div class="col-12 col-md-6">
             <div class="title">Drone Controls</div>
             <div class="box">
-                <div class="controls-div">
-                    <button type="button" class="btn btn-warning" disabled id="command-takeoff">Take-Off Request /\</button>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="controls-div">
+                            <button type="button" class="btn btn-warning" disabled id="command-takeoff">Take-Off /\</button>
+                        </div>
+                        <div class="controls-div">
+                            <button type="button" class="btn btn-primary" disabled id="command-move">Relative Move</button>
+                        </div>
+                        <div class="controls-div">
+                            <button type="button" class="btn btn-primary" disabled id="command-search">Search</button>
+                            <button type="button" class="btn btn-primary" disabled id="command-follow">Follow</button>
+                        </div>
+                        <div class="controls-div">
+                            <button type="button" class="btn btn-secondary" disabled id="command-home">Return to Home</button>
+                        </div>
+                        <div class="controls-div">
+                            <button type="button" class="btn btn-danger" disabled id="command-clear">Clear and Stop</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 my-1">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Status</div>
+                                    </div>
+                                    <input type="text" class="form-control" readonly id="drone-status">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="controls-div">
+                            <button type="button" class="btn btn-warning" disabled style="visibility:hidden">Take-Off Request /\</button>
+                        </div>
+                        <div class="row controls-div">
+                            <div class="col-3 pr-0">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">x</div>
+                                    </div>
+                                    <input type="text" disabled class="form-control" id="command-relative-x">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">y</div>
+                                    </div>
+                                    <input type="text" disabled class="form-control" id="command-relative-y">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">z</div>
+                                    </div>
+                                    <input type="text" disabled class="form-control" id="command-relative-z">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">psi</div>
+                                    </div>
+                                    <input type="text" disabled class="form-control" id="command-relative-z">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row controls-div">
+                            <div class="col-6 col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Target ID</div>
+                                    </div>
+                                    <input type="number" disabled class="form-control" id="command-target-id">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="controls-div">
-                    <button type="button" class="btn btn-primary" disabled id="command-move">Relative Move</button>
-                </div>
-                <div class="controls-div">
-                    <button type="button" class="btn btn-primary" disabled id="command-search">Search Command</button>
-                </div>
-                <div class="controls-div">
-                    <button type="button" class="btn btn-primary" disabled id="command-follow">Follow</button>
-                </div>
-                <div class="controls-div">
-                    <button type="button" class="btn btn-dark" disabled id="command-clear">Clear Commands</button>
-                </div>
-            </div>
-
-            
+            </div>   
         </div>
         
     </div>
     <div class="row">
+        
         <div class="title">Camera Views</div>
             <div class="controls-div">
-                <button class="btn btn-warning" type="button" data-bs-toggle="collapse" disabled data-bs-target="#collapse-camera" id="show-camera"
-                    aria-expanded="false" aria-controls="collapseExample">
-                    Show Camera Image
-                </button>
-                <button class="btn btn-secondary" type="button" disabled id="show-apriltags">
-                    Show AprilTags
-                </button>
-                <button class="btn btn-warning" type="button" data-bs-toggle="collapse" disabled data-bs-target="#collapse-maps" id="show-maps"
-                    aria-expanded="false" aria-controls="collapseExample">
-                    Show Undistorted and Depth Map
-                </button>
+                <div class="btn-group">
+                    <button type="button" disabled class="btn btn-warning" data-bs-toggle="collapse" data-bs-target="#collapse-camera" id="show-camera"
+                    aria-expanded="false" aria-controls="collapse">Show Camera Images</button>
+                    <button type="button" disabled class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" id="show-maps">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" id="show-apriltags">Show AprilTags</a></li>
+                        <li><a class="dropdown-item" id="show-undistorted">Show Undistorted Image</a></li>
+                        <li><a class="dropdown-item" id="show-depth">Show Depth Map</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#" id="clear-maps">No Additional Image</a></li>
+                    </ul>
+                </div>
             </div>
     </div>
     <br>
     <div class="row"> 
-        <div class="col-4">
-            <div class="title text-center">T265 Camera</div>
+        <div class="col-6 col-md-6">
+            <div class="title text-center">Raw Camera Image</div>
             <div class="collapse" id="collapse-camera">
-                <div class="card card-body">
+                <div class="card card-body" >
                     <img id="drone-camera" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png">
                 </div>
                 
             </div>    
         </div>
-        <div class="col-4">
-            <div class="title text-center">Undistorted View</div>
-            <div class="collapse" id="collapse-maps">
-                <div class="card card-body">
-                    <img id="drone-undistorted" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png">
-                </div>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="title text-center">Depth View</div>
-            <div class="collapse" id="collapse-maps">
-                <div class="card card-body">
-                    <img id="drone-depth" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png">
+        <div class="col-6 col-md-6">
+            <div class="title text-center" id="additional-title">Additional View</div>
+            <div class="collapse" id="collapse-camera">
+                <div class="card card-body" >
+                    <img id="drone-additional" style='height: 100%; width: 100%; object-fit: contain' src="assets/img/placeholder.png">
                 </div>
             </div>
         </div>
