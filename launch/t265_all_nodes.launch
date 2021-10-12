@@ -5,19 +5,19 @@
     <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
 
     <!-- This node will launch MAVROS -->
-    <include file="$(find monash_main)/launch/apm.launch"/>
+    <include file="$(find monash_main)/launch/sub_launch/apm.launch"/>
 
     <!-- Start Monash Main Node -->
     <node pkg="monash_main" type="monash_main_node" name="monash_main_node" respawn="false" output="screen"/>
 
     <!-- Arni Statistics Monitoring -->
     <group>
-    <include file="$(find monash_main)/launch/arni_monitor.launch"/>
+    <include file="$(find monash_main)/launch/sub_launch/arni_monitor.launch"/>
         <arg name="enable_statistics" value="true"/>
     </group>
 
     <!-- This node will launch the node that bridges realsense-ros and MAVROS -->
-    <include file="$(find monash_main)/launch/t265_tf_to_mavros.launch"/>
+    <include file="$(find monash_main)/launch/sub_launch/t265_tf_to_mavros.launch"/>
 
     <!-- This node will launch the node the rosbridge_server websocket -->
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
