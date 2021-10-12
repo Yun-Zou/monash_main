@@ -62,10 +62,9 @@ find_package(catkin REQUIRED COMPONENTS
 #   Service2.srv
 # )
 
-add_service_files(
-  FILES
-  RequestMission.srv
-)
+# add_service_files(
+#   FILES
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -113,7 +112,7 @@ catkin_package(
 #  INCLUDE_DIRS
 #  LIBRARIES
   CATKIN_DEPENDS
-    message_runtime
+    # message_runtime
 #  DEPENDS
 )
 
