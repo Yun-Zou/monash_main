@@ -20,9 +20,14 @@ $(document).ready(function () {
         current_time: 0
     }
 
+    let target_msgs = {
+        initialised: false,
+        current_time: 0
+    }
+
     let image_sources = {
         camera: {
-            topic: '/camera/color/image_raw/compressed',
+            topic: '/camera/fisheye1/image/compressed',
             msg_type: 'sensor_msgs/CompressedImage'
         },
         apriltags: {
@@ -42,6 +47,14 @@ $(document).ready(function () {
     let image_topic
     let additional_image_topic;
 
+    var command_request = new ROSLIB.Service({
+        ros: droneros,
+        name: '/monash_motion/command',
+        serviceType: 'mavros_msgs/CommandInt'
+    });
+
+    let command = ["takeoff","land","move","search","follow","home","clear"];    
+
     var rounding_factor = 100;
 
     // rosConnect();
@@ -59,6 +72,7 @@ $(document).ready(function () {
             $("#drone-IP").removeClass("form-border-error").addClass("form-border-success");
             
             subscribeDronePositionTopics(droneros)
+            subscribeTargetPositionTopics(droneros)
             
             enableButtons()
             enableCommands()
@@ -157,37 +171,58 @@ $(document).ready(function () {
         }
     })
 
-    $("#command-search").click(function () {
-
-        console.log('asdf')
-        var addTwoIntsClient = new ROSLIB.Service({
-            ros: droneros,
-            name: '/add_two_ints',
-            serviceType: 'rospy_tutorials/AddTwoInts'
+    $("#command-takeoff").click(function () {
+        let commandID = command.findIndex(element => element == "takeoff");
+        console.log(commandID);
+        var request = new ROSLIB.ServiceRequest({
+            command: commandID
         });
 
+        command_request.callService(request, function (result) {
+            console.log('Result for service call on ' + command_request.name + ': '
+                + result.success);
+        });
+    })
+
+    $("#command-land").click(function () {
+        var request = new ROSLIB.ServiceRequest({
+            command: 0,
+        });
+
+        command_request.callService(request, function (result) {
+            console.log('Result for service call on ' + command_request.name + ': '
+                + result.sum);
+        });
+    })
+
+    $("#command-move").click(function () {
         var request = new ROSLIB.ServiceRequest({
             a: 1,
             b: 2
         });
 
-        addTwoIntsClient.callService(request, function (result) {
+        command_request.callService(request, function (result) {
             console.log('Result for service call on '
-                + addTwoIntsClient.name
+                + command_request.name
                 + ': '
                 + result.sum);
         });
-        // if (connections.drone) {
-        //     if (!feeds.maps_feed) {
-        //         $("#show-maps").addClass("btn-danger").removeClass("btn-warning").html("Close Undistorted and Depth Map")
-        //         subscribeDroneMapsTopics(droneros)
-        //         feeds.maps_feed = true
-        //     } else {
-        //         $("#show-maps").addClass("btn-warning").removeClass("btn-danger").html("Show Undistorted and Depth Map")
-        //         unsubscribeDroneMapsTopics();
-        //         feeds.maps_feed = false
-        //     }
-        // }
+    })
+
+    $("#command-search").click(function () {
+
+        console.log('asdf')
+        var request = new ROSLIB.ServiceRequest({
+            a: 1,
+            b: 2
+        });
+
+        command_request.callService(request, function (result) {
+            console.log('Result for service call on '
+                + command_request.name
+                + ': '
+                + result.sum);
+        });
     })
 
 
@@ -219,9 +254,42 @@ $(document).ready(function () {
             let time = msg.header.stamp.secs - drone_msgs.initial_time;
 
             $("#drone-heartbeat").val(time)
+            
+        });
+    }
 
+    function update_target_time() {
+        $("#tag-lastseen").val((Date.now() - target_msgs.current_time)/1000);
+    }
+
+    function subscribeTargetPositionTopics(droneros) {
+        var target_pose = new ROSLIB.Topic({
+            ros: droneros,
+            name: '/monash_perception/target',
+            messageType: 'geometry_msgs/PoseStamped'
         });
 
+        target_pose.subscribe(function (msg) {
+            let pose = msg.pose;
+            let q = pose.orientation;
+            var yaw = Math.atan2(2.0 * (q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z);
+            var pitch = Math.asin(-2.0 * (q.x * q.z - q.w * q.y));
+            var roll = Math.atan2(2.0 * (q.x * q.y + q.w * q.z), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z);
+            $("#tag-position-x").val(Math.round(pose.position.x * rounding_factor) / rounding_factor);
+            $("#tag-position-y").val(Math.round(pose.position.y * rounding_factor) / rounding_factor);
+            $("#tag-position-z").val(Math.round(pose.position.z * rounding_factor) / rounding_factor);
+            $("#tag-orientation-yaw").val(Math.round(yaw * 180 / Math.PI * rounding_factor) / rounding_factor);
+            $("#tag-orientation-pitch").val(Math.round(pitch * 180 / Math.PI * rounding_factor) / rounding_factor);
+            $("#tag-orientation-roll").val(Math.round(roll * 180 / Math.PI * rounding_factor) / rounding_factor);
+
+            if (target_msgs.initialised == false) {
+                target_msgs.initialised = true
+                setInterval(update_target_time,100);
+            }
+
+            target_msgs.current_time = Date.now()
+
+        });
     }
 
     function subscribeDroneCameraTopics(droneros) {

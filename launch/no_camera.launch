@@ -2,9 +2,6 @@
     <!-- This node will launch MAVROS -->
     <include file="$(find monash_main)/launch/sub_launch/apm.launch"/>
 
-    <!-- Start Monash Main Node -->
-    <node pkg="monash_main" type="monash_main_node" name="monash_main_node" respawn="false" output="screen"/>
-
     <!-- Arni Statistics Monitoring -->
     <group>
     <include file="$(find monash_main)/launch/sub_launch/arni_monitor.launch"/>
@@ -13,4 +10,7 @@
 
     <!-- This node will launch the node the rosbridge_server websocket -->
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+
+    <!-- Start Monash Main Node -->
+    <node pkg="monash_main" type="monash_main_node" name="monash_main_node" respawn="false" output="screen"/>
 </launch>
