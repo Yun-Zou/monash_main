@@ -1,7 +1,7 @@
 $(document).ready(function () {
     
     let droneros;
-    let local;
+    let command_request;
 
     let connections = {
         drone: false,
@@ -27,15 +27,15 @@ $(document).ready(function () {
 
     let image_sources = {
         camera: {
-            topic: '/camera/fisheye1/image/compressed',
+            topic: '/camera/fisheye1/image_raw/compressed',
             msg_type: 'sensor_msgs/CompressedImage'
         },
         apriltags: {
-            topic: 'tag_detections_image',
+            topic: 'tag_detections_image/compressed',
             msg_type: 'sensor_msgs/CompressedImage'
         },
         undistorted: {
-            topic: '/camera/color/image_raw',
+            topic: '/camera/fisheye1/rect/image/compressed',
             msg_type: 'sensor_msgs/CompressedImage'
         },
         depth: {
@@ -47,17 +47,9 @@ $(document).ready(function () {
     let image_topic
     let additional_image_topic;
 
-    var command_request = new ROSLIB.Service({
-        ros: droneros,
-        name: '/monash_motion/command',
-        serviceType: 'mavros_msgs/CommandInt'
-    });
-
-    let command = ["takeoff","land","move","search","follow","home","clear"];    
+    let command = ["Grounded","Hover","Flight","Search","Follow","RTL","Land","TakeOff"];    
 
     var rounding_factor = 100;
-
-    // rosConnect();
 
     $("#submit-IP").click(function() {
         let IP = 'ws://' + $("#drone-IP").val() + ':9090';
@@ -65,6 +57,12 @@ $(document).ready(function () {
         
         droneros = new ROSLIB.Ros({
             url: IP
+        });
+
+        command_request = new ROSLIB.Service({
+            ros: droneros,
+            name: '/monash_motion/request_command',
+            serviceType: 'monash_main/RequestAction'
         });
 
         droneros.on('connection', function () {
@@ -172,11 +170,37 @@ $(document).ready(function () {
     })
 
     $("#command-takeoff").click(function () {
-        let commandID = command.findIndex(element => element == "takeoff");
-        console.log(commandID);
-        var request = new ROSLIB.ServiceRequest({
-            command: commandID
+        var request = getActionRequest("TakeOff");
+        console.log(request);
+        console.log(command_request);
+        command_request.callService(request, function (result) {
+            console.log('Result for service call on ' + command_request.name + ': '
+                + result.success);
         });
+
+    })
+
+    $("#command-land").click(function () {
+        request = getActionRequest("Land");
+
+        command_request.callService(request, function (result) {
+            console.log('Result for service call on ' + command_request.name + ': '
+                + result.success);
+        });
+
+    })
+
+    $("#command-move").click(function () {
+        let x = $("#command-relative-x").val();
+        let y = $("#command-relative-y").val();
+        let z = $("#command-relative-z").val();
+        let psi = $("#command-relative-psi").val();
+        
+        request = getActionRequest("Flight");
+        request.param1 = x;
+        request.param2 = y;
+        request.param3 = z;
+        request.param4 = psi;
 
         command_request.callService(request, function (result) {
             console.log('Result for service call on ' + command_request.name + ': '
@@ -184,46 +208,59 @@ $(document).ready(function () {
         });
     })
 
-    $("#command-land").click(function () {
-        var request = new ROSLIB.ServiceRequest({
-            command: 0,
-        });
+    $("#command-search").click(function () {
+
+        request = getActionRequest("Search");
 
         command_request.callService(request, function (result) {
             console.log('Result for service call on ' + command_request.name + ': '
-                + result.sum);
+                + result.success);
         });
     })
 
-    $("#command-move").click(function () {
-        var request = new ROSLIB.ServiceRequest({
-            a: 1,
-            b: 2
-        });
+    $("#command-follow").click(function () {
+
+        request = getActionRequest("Follow");
 
         command_request.callService(request, function (result) {
-            console.log('Result for service call on '
-                + command_request.name
-                + ': '
-                + result.sum);
+            console.log('Result for service call on ' + command_request.name + ': '
+                + result.success);
         });
     })
 
-    $("#command-search").click(function () {
+    $("#command-home").click(function () {
 
-        console.log('asdf')
-        var request = new ROSLIB.ServiceRequest({
-            a: 1,
-            b: 2
-        });
+        request = getActionRequest("RTL");
 
         command_request.callService(request, function (result) {
-            console.log('Result for service call on '
-                + command_request.name
-                + ': '
-                + result.sum);
+            console.log('Result for service call on ' + command_request.name + ': '
+                + result.success);
         });
     })
+
+    $("#command-clear").click(function () {
+
+        request = getActionRequest("Hover");
+
+        command_request.callService(request, function (result) {
+            console.log('Result for service call on ' + command_request.name + ': '
+                + result.success);
+        });
+    })
+
+    function getActionRequest(mode) {
+        let commandID = command.findIndex(element => element == mode);
+        var request = new ROSLIB.ServiceRequest({
+            command: commandID,
+            param1: 0.0,
+            param2: 0.0,
+            param3: 0.0,
+            param4: 0.0,
+            param5: 0
+        });
+
+        return request;
+    }
 
 
     function subscribeDronePositionTopics(droneros) {
@@ -231,6 +268,12 @@ $(document).ready(function () {
             ros: droneros,
             name: '/mavros/global_position/local',
             messageType: 'nav_msgs/Odometry'
+        });
+
+        var flight_status = new ROSLIB.Topic({
+            ros: droneros,
+            name: '/monash_motion/flight_mode',
+            messageType: 'std_msgs/String'
         });
 
         mavros_vision_pose.subscribe(function (msg) {
@@ -255,6 +298,10 @@ $(document).ready(function () {
 
             $("#drone-heartbeat").val(time)
             
+        });
+        flight_status.subscribe(function (msg) {
+
+            $("#drone-flight-mode").val(msg.data)
         });
     }
 
@@ -330,31 +377,6 @@ $(document).ready(function () {
             document.getElementById('drone-additional').src = ""
         }
     }
-
-    function dronerosConnect(){
-        
-    }
-
-    function rosConnect() {
-        ros = new ROSLIB.Ros({
-            url: 'ws://localhost:9090'
-        });
-
-        ros.on('connection', function () {
-            console.log('Connected to websocket server.');
-            connections.local = true;
-        });
-
-        ros.on('error', function (error) {
-            console.log('Error connecting to websocket server: ', error);
-            connections.local = false;
-        });
-
-        ros.on('close', function () {
-            console.log('Connection to websocket server closed.');
-            connections.local = false;
-        });
-    }
     
     function enableButtons() {
         $("#show-camera").attr('disabled', false)
@@ -368,21 +390,31 @@ $(document).ready(function () {
 
     function enableCommands() {
         $("#command-takeoff").attr('disabled', false)
+        $("#command-land").attr('disabled', false)
         $("#command-move").attr('disabled', false)
         $("#command-search").attr('disabled', false)
         $("#command-follow").attr('disabled', false)
         $("#command-clear").attr('disabled', false)
         $("#command-home").attr('disabled', false)
+        $("#command-relative-x").attr('disabled', false)
+        $("#command-relative-y").attr('disabled', false)
+        $("#command-relative-z").attr('disabled', false)
+        $("#command-relative-psi").attr('disabled', false)
         
     }
 
     function disableCommands() {
         $("#command-takeoff").attr('disabled', true)
+        $("#command-land").attr('disabled', true)
         $("#command-move").attr('disabled', true)
         $("#command-search").attr('disabled', true)
         $("#command-follow").attr('disabled', true)
         $("#command-clear").attr('disabled', true)
         $("#command-home").attr('disabled', true)
+        $("#command-relative-x").attr('disabled', true)
+        $("#command-relative-y").attr('disabled', true)
+        $("#command-relative-z").attr('disabled', true)
+        $("#command-relative-psi").attr('disabled', true)
     }
 
 });

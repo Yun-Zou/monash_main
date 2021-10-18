@@ -16,6 +16,8 @@
     <!-- This node will launch the node that bridges realsense-ros and MAVROS -->
     <include file="$(find monash_main)/launch/sub_launch/t265_tf_to_mavros.launch"/>
 
+    <!-- <node name="republish" type="republish" pkg="image_transport" output="screen" args="raw in:=/camera/fisheye1/image_raw compressed out:=/camera/fisheye1/image/compressed" /> -->
+
     <!-- This node will launch the node the rosbridge_server websocket -->
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
 

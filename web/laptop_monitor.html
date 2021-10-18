@@ -40,67 +40,8 @@
             }
         });
         cmdVel.publish(twist);
+      
 
-        // Subscribing to a Topic
-        // ----------------------
-
-        // var image_topic = new ROSLIB.Topic({
-        //     ros: ros,
-        //     name: '/camera/fisheye1/image_raw/compressed',
-        //     messageType: 'sensor_msgs/CompressedImage'
-        // });
-
-        // var image_undistorted_topic = new ROSLIB.Topic({
-        //     ros: ros,
-        //     name: '/camera/fisheye1/rect/image/compressed',
-        //     messageType: 'sensor_msgs/CompressedImage'
-        // });
-
-        // var mavros_vision_pose = new ROSLIB.Topic({
-        //     ros: drone-ros,
-        //     name: '/mavros/vision_pose/pose',
-        //     messageType: 'geometry_msgs/PoseStamped'
-        // });        
-
-        // image_topic.subscribe(function (message) {
-        //     document.getElementById('my_image').src = "data:image/jpg;base64," + message.data;
-        // });
-
-        // image_undistorted_topic.subscribe(function (message) {
-        //     document.getElementById('my_image_undistorted').src = "data:image/jpg;base64," + message.data;
-        //     cmdVel.publish(twist);
-        // });
-
-        mavros_vision_pose.subscribe(function (message) {
-            let q = message.pose.orientation;
-            var yaw = Math.atan2(2.0 * (q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z);
-            var pitch = Math.asin(-2.0 * (q.x * q.z - q.w * q.y));
-            var roll = Math.atan2(2.0 * (q.x * q.y + q.w * q.z), q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z);
-            $("#drone-position-x").val(Math.round(message.pose.position.x * rounding_factor) / rounding_factor);
-            $("#drone-position-y").val(Math.round(message.pose.position.y * rounding_factor) / rounding_factor);
-            $("#drone-position-z").val(Math.round(message.pose.position.z * rounding_factor) / rounding_factor);
-            $("#drone-orientation-yaw").val(Math.round(yaw * 180 / Math.PI * rounding_factor) / rounding_factor);
-            $("#drone-orientation-pitch").val(Math.round(pitch * 180 / Math.PI * rounding_factor) / rounding_factor);
-            $("#drone-orientation-roll").val(Math.round(roll * 180 / Math.PI * rounding_factor) / rounding_factor);
-        });        
-
-
-        // Getting and setting a param value
-        // ---------------------------------
-
-        ros.getParams(function (params) {
-            console.log(params);
-        });
-
-        var maxVelX = new ROSLIB.Param({
-            ros: ros,
-            name: 'max_vel_y'
-        });
-
-        maxVelX.set(0.8);
-        maxVelX.get(function (value) {
-            console.log('MAX VAL: ' + value);
-        });
     </script>
 </head>
 
@@ -297,7 +238,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">x</div>
                                     </div>
-                                    <input type="text" disabled class="form-control" id="command-relative-x">
+                                    <input type="number" disabled class="form-control" id="command-relative-x">
                                 </div>
                             </div>
                             <div class="col-4 col-sm-3">
@@ -305,7 +246,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">y</div>
                                     </div>
-                                    <input type="text" disabled class="form-control" id="command-relative-y">
+                                    <input type="number" disabled class="form-control" id="command-relative-y">
                                 </div>
                             </div>
                             <div class="col-4 col-sm-3">
@@ -313,7 +254,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">z</div>
                                     </div>
-                                    <input type="text" disabled class="form-control" id="command-relative-z">
+                                    <input type="number" disabled class="form-control" id="command-relative-z">
                                 </div>
                             </div>
                             <div class="col-4 col-sm-3">
@@ -321,7 +262,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">psi</div>
                                     </div>
-                                    <input type="text" disabled class="form-control" id="command-relative-z">
+                                    <input type="number" disabled class="form-control" id="command-relative-psi">
                                 </div>
                             </div>
                         </div>
@@ -341,8 +282,7 @@
         </div>
         
     </div>
-    <div class="row">
-        
+    <div class="row">     
         <div class="title">Camera Views</div>
             <div class="controls-div">
                 <div class="btn-group">
