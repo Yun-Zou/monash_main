@@ -47,7 +47,7 @@ $(document).ready(function () {
     let image_topic
     let additional_image_topic;
 
-    let command = ["Grounded","Hover","Flight","Search","Follow","RTL","Land","TakeOff"];    
+    let command = ["Grounded","Hover","Flight", "Circle", "Search","Follow","RTL","Land","TakeOff"];    
 
     var rounding_factor = 100;
 
@@ -201,6 +201,24 @@ $(document).ready(function () {
         request.param2 = y;
         request.param3 = z;
         request.param4 = psi;
+
+        command_request.callService(request, function (result) {
+            console.log('Result for service call on ' + command_request.name + ': '
+                + result.success);
+        });
+    })
+
+    $("#command-circle").click(function () {
+        let x = $("#command-circle-x").val();
+        let y = $("#command-circle-y").val();
+        let r = $("#command-circle-radius").val();
+        let dir = $("#command-circle-direction").val();
+
+        request = getActionRequest("Circle");
+        request.param1 = x;
+        request.param2 = y;
+        request.param3 = r;
+        request.param4 = dir;
 
         command_request.callService(request, function (result) {
             console.log('Result for service call on ' + command_request.name + ': '
@@ -392,6 +410,7 @@ $(document).ready(function () {
         $("#command-takeoff").attr('disabled', false)
         $("#command-land").attr('disabled', false)
         $("#command-move").attr('disabled', false)
+        $("#command-circle").attr('disabled', false)
         $("#command-search").attr('disabled', false)
         $("#command-follow").attr('disabled', false)
         $("#command-clear").attr('disabled', false)
@@ -400,6 +419,10 @@ $(document).ready(function () {
         $("#command-relative-y").attr('disabled', false)
         $("#command-relative-z").attr('disabled', false)
         $("#command-relative-psi").attr('disabled', false)
+        $("#command-circle-x").attr('disabled', false)
+        $("#command-circle-y").attr('disabled', false)
+        $("#command-circle-radius").attr('disabled', false)
+        $("#command-circle-direction").attr('disabled', false)
         
     }
 
@@ -407,6 +430,7 @@ $(document).ready(function () {
         $("#command-takeoff").attr('disabled', true)
         $("#command-land").attr('disabled', true)
         $("#command-move").attr('disabled', true)
+        $("#command-circle").attr('disabled', true)
         $("#command-search").attr('disabled', true)
         $("#command-follow").attr('disabled', true)
         $("#command-clear").attr('disabled', true)
@@ -415,6 +439,10 @@ $(document).ready(function () {
         $("#command-relative-y").attr('disabled', true)
         $("#command-relative-z").attr('disabled', true)
         $("#command-relative-psi").attr('disabled', true)
+        $("#command-circle-x").attr('disabled', true)
+        $("#command-circle-y").attr('disabled', true)
+        $("#command-circle-radius").attr('disabled', true)
+        $("#command-circle-direction").attr('disabled', true)
     }
 
 });

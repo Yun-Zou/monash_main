@@ -218,6 +218,9 @@
                             <button type="button" class="btn btn-primary" disabled id="command-move">Relative Move</button>
                         </div>
                         <div class="controls-div">
+                            <button type="button" class="btn btn-primary" disabled id="command-circle">Circle</button>
+                        </div>
+                        <div class="controls-div">
                             <button type="button" class="btn btn-primary" disabled id="command-search">Search</button>
                             <button type="button" class="btn btn-primary" disabled id="command-follow">Follow</button>
                         </div>
@@ -266,6 +269,40 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row controls-div">
+                            <div class="col-4 col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">x</div>
+                                    </div>
+                                    <input type="number" disabled class="form-control" id="command-circle-x">
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">y</div>
+                                    </div>
+                                    <input type="number" disabled class="form-control" id="command-circle-y">
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">r</div>
+                                    </div>
+                                    <input type="number" disabled class="form-control" id="command-circle-radius">
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">dir</div>
+                                    </div>
+                                    <input type="number" disabled class="form-control" id="command-circle-direction">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -278,7 +315,7 @@
                         </div>
                     </div>
                 </div>
-            </div>   
+            </div>  
         </div>
         
     </div>

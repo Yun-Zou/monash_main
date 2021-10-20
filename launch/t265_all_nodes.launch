@@ -16,11 +16,13 @@
     <!-- This node will launch the node that bridges realsense-ros and MAVROS -->
     <include file="$(find monash_main)/launch/sub_launch/t265_tf_to_mavros.launch"/>
 
-    <!-- <node name="republish" type="republish" pkg="image_transport" output="screen" args="raw in:=/camera/fisheye1/image_raw compressed out:=/camera/fisheye1/image/compressed" /> -->
+    <include file="$(find monash_perception)/launch/compress_streams.launch"/>
 
     <!-- This node will launch the node the rosbridge_server websocket -->
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
 
     <!-- Start Monash Main Node -->
-    <node pkg="monash_main" type="monash_main_node" name="monash_main_node" respawn="false" output="screen"/>
+    <!-- <node pkg="monash_main" type="monash_main_node" name="monash_main_node" respawn="false" output="screen"/> -->
+    <node pkg="mavros" type="mavsys" name="mavsys" arg="--all 10" respawn="false" output="screen"/>
+    
 </launch>
