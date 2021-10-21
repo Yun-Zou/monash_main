@@ -4,6 +4,8 @@
     <!-- This node will launch the ROS driver for Realsense T265 -->
     <include file="$(find realsense2_camera)/launch/rs_t265.launch"/>
 
+    <node pkg="vision_to_mavros" type="set_origin.py" name="set_origin" respawn="false" output="screen"/>
+
     <!-- This node will launch MAVROS -->
     <include file="$(find monash_main)/launch/sub_launch/apm.launch"/>
 
