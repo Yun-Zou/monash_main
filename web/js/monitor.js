@@ -170,9 +170,8 @@ $(document).ready(function () {
     })
 
     $("#command-takeoff").click(function () {
-        var request = getActionRequest("TakeOff");
-        console.log(request);
-        console.log(command_request);
+        request = getActionRequest("TakeOff");
+        
         command_request.callService(request, function (result) {
             console.log('Result for service call on ' + command_request.name + ': '
                 + result.success);
@@ -191,17 +190,18 @@ $(document).ready(function () {
     })
 
     $("#command-move").click(function () {
-        let x = $("#command-relative-x").val();
-        let y = $("#command-relative-y").val();
-        let z = $("#command-relative-z").val();
-        let psi = $("#command-relative-psi").val();
+        let x = $("#command-aboslute-x").val();
+        let y = $("#command-aboslute-y").val();
+        let z = $("#command-aboslute-z").val();
+        let psi = $("#command-aboslute-psi").val();
         
         request = getActionRequest("Flight");
-        request.param1 = x;
-        request.param2 = y;
-        request.param3 = z;
-        request.param4 = psi;
+        request.param1 = Number.parseFloat(x);
+        request.param2 = Number.parseFloat(y);
+        request.param3 = Number.parseFloat(z);
+        request.param4 = Number.parseFloat(psi);
 
+        console.log(request);
         command_request.callService(request, function (result) {
             console.log('Result for service call on ' + command_request.name + ': '
                 + result.success);
@@ -215,10 +215,10 @@ $(document).ready(function () {
         let dir = $("#command-circle-direction").val();
 
         request = getActionRequest("Circle");
-        request.param1 = x;
-        request.param2 = y;
-        request.param3 = r;
-        request.param4 = dir;
+        request.param1 = Number.parseFloat(x);
+        request.param2 = Number.parseFloat(y);
+        request.param3 = Number.parseFloat(r);
+        request.param4 = Number.parseFloat(dir);
 
         command_request.callService(request, function (result) {
             console.log('Result for service call on ' + command_request.name + ': '
@@ -415,10 +415,10 @@ $(document).ready(function () {
         $("#command-follow").attr('disabled', false)
         $("#command-clear").attr('disabled', false)
         $("#command-home").attr('disabled', false)
-        $("#command-relative-x").attr('disabled', false)
-        $("#command-relative-y").attr('disabled', false)
-        $("#command-relative-z").attr('disabled', false)
-        $("#command-relative-psi").attr('disabled', false)
+        $("#command-aboslute-x").attr('disabled', false)
+        $("#command-aboslute-y").attr('disabled', false)
+        $("#command-aboslute-z").attr('disabled', false)
+        $("#command-aboslute-psi").attr('disabled', false)
         $("#command-circle-x").attr('disabled', false)
         $("#command-circle-y").attr('disabled', false)
         $("#command-circle-radius").attr('disabled', false)
@@ -435,10 +435,10 @@ $(document).ready(function () {
         $("#command-follow").attr('disabled', true)
         $("#command-clear").attr('disabled', true)
         $("#command-home").attr('disabled', true)
-        $("#command-relative-x").attr('disabled', true)
-        $("#command-relative-y").attr('disabled', true)
-        $("#command-relative-z").attr('disabled', true)
-        $("#command-relative-psi").attr('disabled', true)
+        $("#command-aboslute-x").attr('disabled', true)
+        $("#command-aboslute-y").attr('disabled', true)
+        $("#command-aboslute-z").attr('disabled', true)
+        $("#command-aboslute-psi").attr('disabled', true)
         $("#command-circle-x").attr('disabled', true)
         $("#command-circle-y").attr('disabled', true)
         $("#command-circle-radius").attr('disabled', true)
