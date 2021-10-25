@@ -14,33 +14,7 @@
 
     <script type="text/javascript" src="js/monitor.js"></script>
 
-    <script type="text/javascript" type="text/javascript">
-        // Connecting to ROS
-        // -----------------
-
-        // Publishing a Topic
-        // ------------------
-
-        var cmdVel = new ROSLIB.Topic({
-            ros: ros,
-            name: '/cmd_vel',
-            messageType: 'geometry_msgs/Twist'
-        });
-
-        var twist = new ROSLIB.Message({
-            linear: {
-                x: 0.1,
-                y: 0.2,
-                z: 0.3
-            },
-            angular: {
-                x: -0.1,
-                y: -0.2,
-                z: -0.3
-            }
-        });
-        cmdVel.publish(twist);
-      
+    <script type="text/javascript" type="text/javascript">      
 
     </script>
 </head>
@@ -62,13 +36,13 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-5">
             <div class="title">Status</div>
             <div class="box">
                 <div class="subtitle">Drone Monitor</div>
                 <form>
                     <div class="row">
-                        <div class="col-6 col-lg-3 col-md-5 my-1">
+                        <div class="col-6 col-lg-4 col-md-5 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Time</div>
@@ -76,7 +50,7 @@
                                 <input type="text" class="form-control" readonly id="drone-heartbeat">
                             </div>
                         </div>
-                        <div class="col-6 col-lg-6 col-md-7 my-1">
+                        <div class="col-6 col-lg-8 col-md-7 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Flight Mode</div>
@@ -86,7 +60,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">x</div>
@@ -94,7 +68,7 @@
                                 <input type="text" class="form-control" readonly id="drone-position-x">
                             </div>
                         </div>
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">y</div>
@@ -102,7 +76,7 @@
                                 <input type="text" class="form-control" readonly id="drone-position-y">
                             </div>
                         </div>
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">z</div>
@@ -112,7 +86,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Yaw</div>
@@ -120,7 +94,7 @@
                                 <input type="text" class="form-control" readonly id="drone-orientation-yaw">
                             </div>
                         </div>
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Pitch</div>
@@ -128,7 +102,7 @@
                                 <input type="text" class="form-control" readonly id="drone-orientation-pitch">
                             </div>
                         </div>
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Roll</div>
@@ -142,7 +116,7 @@
             <div class="box">
                 <div class="subtitle">Target Monitor</div>
                     <div class="row">
-                        <div class="col-6 col-lg-4 col-md-8 my-1">
+                        <div class="col-6 col-lg-6 col-md-8 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Last Seen</div>
@@ -152,7 +126,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">x</div>
@@ -160,7 +134,7 @@
                                 <input type="text" class="form-control" readonly id="tag-position-x">
                             </div>
                         </div>
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">y</div>
@@ -168,7 +142,7 @@
                                 <input type="text" class="form-control" readonly id="tag-position-y">
                             </div>
                         </div>
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">z</div>
@@ -178,7 +152,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Yaw</div>
@@ -186,7 +160,7 @@
                                 <input type="text" class="form-control" readonly id="tag-orientation-yaw">
                             </div>
                         </div>
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Pitch</div>
@@ -194,7 +168,7 @@
                                 <input type="text" class="form-control" readonly id="tag-orientation-pitch">
                             </div>
                         </div>
-                        <div class="col-4 col-lg-3 my-1">
+                        <div class="col-4 col-lg-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Roll</div>
@@ -205,7 +179,7 @@
                     </div>
             </div>
         </div>
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-7">
             <div class="title">Drone Controls</div>
             <div class="box">
                 <div class="row">

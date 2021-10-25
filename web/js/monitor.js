@@ -2,6 +2,8 @@ $(document).ready(function () {
     
     let droneros;
     let command_request;
+    let IP;
+    let quality = 80;
 
     let connections = {
         drone: false,
@@ -27,11 +29,11 @@ $(document).ready(function () {
 
     let image_sources = {
         camera: {
-            topic: '/camera/fisheye1/image_raw/compressed',
+            topic: '/camera/fisheye1/image_raw',
             msg_type: 'sensor_msgs/CompressedImage'
         },
         apriltags: {
-            topic: 'tag_detections_image/compressed',
+            topic: '/tag_detections_image',
             msg_type: 'sensor_msgs/CompressedImage'
         },
         undistorted: {
@@ -52,11 +54,13 @@ $(document).ready(function () {
     var rounding_factor = 100;
 
     $("#submit-IP").click(function() {
-        let IP = 'ws://' + $("#drone-IP").val() + ':9090';
+
+        IP = $("#drone-IP").val();
+        let link = 'ws://' + IP + ':9090';
         $("#submit-IP").attr("disabled",true);
         
         droneros = new ROSLIB.Ros({
-            url: IP
+            url: link
         });
 
         command_request = new ROSLIB.Service({
@@ -358,42 +362,20 @@ $(document).ready(function () {
     }
 
     function subscribeDroneCameraTopics(droneros) {
-        image_topic = new ROSLIB.Topic({
-            ros: droneros,
-            name: image_sources.camera.topic,
-            messageType: image_sources.camera.msg_type
-        });
-
-        image_topic.subscribe(function (message) {
-            document.getElementById('drone-camera').src = "data:image/jpg;base64," + message.data;
-        });
+        document.getElementById('drone-camera').src = "http://" + IP + ":8080/stream?topic=" + image_sources.camera.topic + "&quality=" + quality;
     }
 
     function unsubscribeDroneCameraTopics() {
-        if (image_topic != null) {
-            image_topic.unsubscribe();
-            document.getElementById('drone-camera').src = ""
-        }
+        document.getElementById('drone-camera').src = ""
     }
 
     function subscribeAdditionalImages(droneros, source) {
-        additional_image_topic = new ROSLIB.Topic({
-            ros: droneros,
-            name: source.topic,
-            messageType: source.msg_type
-        });
-
-        additional_image_topic.subscribe(function (message) {
-            document.getElementById('drone-additional').src = "data:image/jpg;base64," + message.data;
-        });
+        document.getElementById('drone-additional').src = "http://" + IP + ":8080/stream?topic=" + source.topic + "&quality=" + quality;
 
     }
 
     function unsubscribeAdditionalImages() {
-        if (additional_image_topic != null) {
-            additional_image_topic.unsubscribe();
-            document.getElementById('drone-additional').src = ""
-        }
+        document.getElementById('drone-additional').src = "";
     }
     
     function enableButtons() {
