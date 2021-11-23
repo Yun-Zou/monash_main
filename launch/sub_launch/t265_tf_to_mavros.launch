@@ -1,3 +1,8 @@
+<!-- 
+    Adapted from vision_to_mavros package. Turns T265 camera pose into mavros vision_pose msgs. 
+    Change roll, pitch, yaw params depending on camera position. (0, -0.74, 0 -1.5707964) is setup for approximately 45 degrees facing downwards
+ -->
+
 <launch>
 
     <!-- This node will launch frame conversion from vision pose (tf) to mavros pose -->

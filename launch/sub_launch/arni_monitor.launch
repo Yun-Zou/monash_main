@@ -1,3 +1,7 @@
+<!-- 
+    Launch arni CPU/RAM monitor. Check ROS arni package documentation
+ -->
+
 <launch>
     <!-- Set enable_statics to true -->
     <include file="$(find arni_core)/launch/init_params.launch"/>

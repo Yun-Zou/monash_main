@@ -1,3 +1,7 @@
+<!-- 
+    Launch nodes for Gazebo simulation environment
+ -->
+
 <launch>
     <!-- This node will launch MAVROS -->
     <include file="$(find monash_main)/launch/sub_launch/gazebo_apm.launch"/>

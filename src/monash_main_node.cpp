@@ -1,12 +1,13 @@
 
-// <node pkg="rosservice" type="rosservice" name="rosservice" args="call /mavros/set_stream_rate 0 10 1"/>
 #include "ros/ros.h"
 #include <mavros_msgs/StreamRate.h>
 
 ros::ServiceClient set_stream_rate;
 
 void init(ros::NodeHandle nh) {
+
   std::string ros_namespace;
+
   if (!nh.hasParam("namespace")) {
 
     ROS_INFO("using default namespace");
@@ -15,6 +16,7 @@ void init(ros::NodeHandle nh) {
     ROS_INFO("using namespace %s", ros_namespace.c_str());
   }
 
+  // mavros set_stream_rate sets if and how fast data is transferred
   set_stream_rate = nh.serviceClient<mavros_msgs::StreamRate>((ros_namespace + "/mavros/set_stream_rate").c_str());
 }
 
@@ -31,6 +33,8 @@ int main(int argc, char **argv) {
   stream_rate.request.message_rate = 10;
   stream_rate.request.on_off = true;
   ROS_INFO("Making mavros set_stream_rate request at %dHz", stream_rate.request.message_rate);
+
+  // Need to call because data doesn't stream by default for some reason
   set_stream_rate.call(stream_rate);
 
   ros::spin();

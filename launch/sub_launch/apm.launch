@@ -1,3 +1,7 @@
+<!-- 
+	Adapted from mavros. Launches ardupilot. Changed fcu_url to USB port 
+-->
+
 <launch>
 	<!-- vim: set ft=xml noet : -->
 	<!-- example launch script for ArduPilot based FCU's -->
